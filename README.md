@@ -4,10 +4,6 @@ QR codes have become ubiquitous in many countries in the last few years. With th
 <h2>Requirements</h2>
 The user will send a command in Discord chat with an argument. The argument, converted into the QR code, will later be sent back to the user.
 
-<h2>Suggested Implementation</h2>
-This project can be completed using TypeScript for better handling
-You can use Google's free API to generate the QR codes
-
 <h2>References</h2>
 <ul>
 <li>Google's API</li>
