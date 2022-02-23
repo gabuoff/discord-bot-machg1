@@ -1,41 +1,34 @@
-// discord bot link https://discord.com/api/oauth2/authorize?client_id=945130274927284234&permissions=448824596544&scope=bot
-
-const { Client, Collection , Intents} = require('discord.js');
 const fs = require('fs');
+const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
-// Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
-client.commands = new Collection ();
+client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles){
+for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
-	//Set a new item in the Collection 
-	//With the key as the command name and the value as the exported module
 	client.commands.set(command.data.name, command);
 }
-// When the client is ready, run this code (only once)
+
 client.once('ready', () => {
 	console.log('Ready!');
 });
 
-
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;	
+	if (!interaction.isCommand()) return;
 
 	const command = client.commands.get(interaction.commandName);
-	
-	if(!command) return;
+
+	if (!command) return;
 
 	try {
 		await command.execute(interaction);
-	}catch (error){
+	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true});
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
 
-// Login to Discord with client token
 client.login(token);
